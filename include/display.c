@@ -129,13 +129,13 @@ void display_draw_string(int x, int y, const char *str, bool on, display *displa
 }
 
 void display_draw_rectangle(int x0, int y0, int x1, int y1, bool filled, bool on, display *display) {
-    // Ajusta os valores para caberem na tela de forma "circular" estilo snake
+    // ajusta os valores para caberem na tela de forma "circular"
     x0 = (x0 + DISPLAY_WIDTH) % DISPLAY_WIDTH;
     y0 = (y0 + DISPLAY_HEIGHT) % DISPLAY_HEIGHT;
     x1 = (x1 + DISPLAY_WIDTH) % DISPLAY_WIDTH;
     y1 = (y1 + DISPLAY_HEIGHT) % DISPLAY_HEIGHT;
 
-    // Se for um retângulo preenchido
+    // se for um retângulo preenchido
     if (filled) {
         for (int y = y0; y != (y1 + 1) % DISPLAY_HEIGHT; y = (y + 1) % DISPLAY_HEIGHT) {
             for (int x = x0; x != (x1 + 1) % DISPLAY_WIDTH; x = (x + 1) % DISPLAY_WIDTH) {
@@ -143,11 +143,11 @@ void display_draw_rectangle(int x0, int y0, int x1, int y1, bool filled, bool on
             }
         }
     } else {
-        // Desenha apenas as bordas do retângulo
-        display_draw_line(x0, y0, x1, y0, on, display); // Linha superior
-        display_draw_line(x0, y1, x1, y1, on, display); // Linha inferior
-        display_draw_line(x0, y0, x0, y1, on, display); // Linha esquerda
-        display_draw_line(x1, y0, x1, y1, on, display); // Linha direita
+        // desenha apenas as bordas do retângulo
+        display_draw_line(x0, y0, x1, y0, on, display); // linha superior
+        display_draw_line(x0, y1, x1, y1, on, display); // linha inferior
+        display_draw_line(x0, y0, x0, y1, on, display); // linha esquerda
+        display_draw_line(x1, y0, x1, y1, on, display); // linha direita
     }
 }
 

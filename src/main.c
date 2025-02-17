@@ -43,7 +43,6 @@ int main() {
     uint8_t previous_cube_x = cube_x;
     uint8_t previous_cube_y = cube_y;
 
-
     display_clear(&dp);
     display_init(&dp);
 
@@ -60,10 +59,11 @@ int main() {
     button_init(JOYSTICK_BUTTON_PIN);
 
     while (true) {
+        // lendo os valores do joystick arredondando para -255 a 255
         int16_t joystick_x = joystick_read(JOYSTICK_X_PIN, 10, 510);
         int16_t joystick_y = joystick_read(JOYSTICK_Y_PIN, 10, 510);
         
-
+        // dependendo do estado do botão A, para saber como estarão os leds
         if(!button_a_state) {
             led_intensity(LED_BLUE_PIN, abs(joystick_y));
             led_intensity(LED_RED_PIN, abs(joystick_x));
@@ -75,21 +75,26 @@ int main() {
 
         }
 
+        // normalizando o o valor gerado pelo joystick ainda mais
+        // para poder definir a velocidade do cubo
         joystick_x = ((joystick_x * 10) / 510);
         joystick_y = ((joystick_y * 10) / 510) * (-1);
 
         DEBUG(joystick_x);
         DEBUG(joystick_y);
-        
+        // decidindo a nova posição do cubo
         cube_x = (cube_x + joystick_x + DISPLAY_WIDTH) % DISPLAY_WIDTH;
         cube_y = (cube_y + joystick_y + DISPLAY_HEIGHT) % DISPLAY_HEIGHT;
-
+        // se o cubo tiver mudado de local, apaga o cubo antigo e desenha o novo
         if(previous_cube_x != cube_x || previous_cube_y != cube_y) {
             display_draw_rectangle(previous_cube_x, previous_cube_y, previous_cube_x + 8, previous_cube_y + 8, true, false, &dp);
             display_draw_rectangle(cube_x, cube_y, cube_x + 8, cube_y + 8, true, true, &dp);
             previous_cube_x = cube_x;
             previous_cube_y = cube_y;
         }
+
+        // desenha o a moldura em volta da tela dnv
+
         display_draw_rectangle(0, 0, 127, 63, false, true, &dp);   
         display_update(&dp);
         sleep_ms(30);
@@ -102,7 +107,7 @@ void button_callback(uint gpio, uint32_t events) {
     uint32_t current_time = to_ms_since_boot(get_absolute_time());
 
     // verifica qual botão acionou a interrupção e trata o debounce
-    if (gpio == BUTTON_A_PIN) { // botão do led verde
+    if (gpio == BUTTON_A_PIN) {
         if (current_time - last_a_interrupt_time > DEBOUNCE_DELAY) {
             last_a_interrupt_time = current_time;
 
@@ -136,7 +141,7 @@ void button_init(uint8_t pin) {
     gpio_set_dir(pin, GPIO_IN);
     gpio_pull_up(pin);
 
-    // habilita interrupções para bordas de subida e descida
+    // habilita interrupções para bordas de descida
     gpio_set_irq_enabled_with_callback(
         pin,
         GPIO_IRQ_EDGE_FALL,
