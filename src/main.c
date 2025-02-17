@@ -22,6 +22,7 @@ display dp;
 static volatile uint32_t last_a_interrupt_time = 0;
 static volatile uint32_t last_b_interrupt_time = 0;
 static volatile uint32_t last_joystick_interrupt_time = 0;
+static volatile uint8_t wall_counter = 0;
 
 volatile bool led_green_state = 0;
 volatile bool button_a_state = 0;
@@ -45,6 +46,7 @@ int main() {
 
     display_clear(&dp);
     display_init(&dp);
+    
 
     display_draw_rectangle(0, 0, 127, 63, false, true, &dp);
     display_draw_rectangle(cube_x, cube_y, cube_x + 8, cube_y + 8, true, true, &dp);
@@ -94,6 +96,16 @@ int main() {
         }
 
         // desenha o a moldura em volta da tela dnv
+        if(wall_counter >= 4) {
+            for(int i = 1; i <= wall_counter; i++) {
+                display_draw_rectangle(i, i, 127 - i, 63 - i, false, false, &dp);
+            }
+            wall_counter = 0;
+        }
+
+        for(int i = 1; i <= wall_counter; i++) {
+            display_draw_rectangle(i, i, 127 - i, 63 - i, false, true, &dp);
+        }
 
         display_draw_rectangle(0, 0, 127, 63, false, true, &dp);   
         display_update(&dp);
@@ -130,6 +142,7 @@ void button_callback(uint gpio, uint32_t events) {
 
             if (events & GPIO_IRQ_EDGE_FALL) {   
                 led_green_state = !led_green_state;
+                wall_counter++;
             }
         }
     }
