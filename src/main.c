@@ -39,8 +39,8 @@ int main() {
     joystick_init(JOYSTICK_X_PIN, JOYSTICK_Y_PIN);
 
     // inicializando o display
-    uint8_t cube_x = DISPLAY_WIDTH / 2 - 8;
-    uint8_t cube_y = DISPLAY_HEIGHT / 2 - 8;
+    uint8_t cube_x = DISPLAY_WIDTH / 2 - 4;
+    uint8_t cube_y = DISPLAY_HEIGHT / 2 - 4;
     uint8_t previous_cube_x = cube_x;
     uint8_t previous_cube_y = cube_y;
 
@@ -50,7 +50,7 @@ int main() {
 
     display_draw_rectangle(0, 0, 127, 63, false, true, &dp);
     display_draw_rectangle(cube_x, cube_y, cube_x + 8, cube_y + 8, true, true, &dp);
-
+    
     display_update(&dp);
 
 
