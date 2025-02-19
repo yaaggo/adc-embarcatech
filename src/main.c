@@ -69,11 +69,9 @@ int main() {
         if(!button_a_state) {
             led_intensity(LED_BLUE_PIN, abs(joystick_y));
             led_intensity(LED_RED_PIN, abs(joystick_x));
-            led_intensity(LED_GREEN_PIN, led_green_state * 255);
         } else {
             led_intensity(LED_BLUE_PIN, 0);
             led_intensity(LED_RED_PIN, 0);
-            led_intensity(LED_GREEN_PIN, 0);
 
         }
 
@@ -141,7 +139,7 @@ void button_callback(uint gpio, uint32_t events) {
             last_joystick_interrupt_time = current_time;
 
             if (events & GPIO_IRQ_EDGE_FALL) {   
-                led_green_state = !led_green_state;
+                led_intensity(LED_GREEN_PIN, 255 * (led_green_state = !led_green_state));
                 wall_counter++;
             }
         }
