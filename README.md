@@ -95,4 +95,4 @@ void button_callback(uint gpio, uint32_t events);
    - No caso da placa, utilizando o LED, apenas observar também.
 ---
 ## Video demonstrativo
-  Link do video com uma explicação curta e demonstrando as features na placa:
+  Link do video com uma explicação curta e demonstrando as features na placa: https://www.youtube.com/watch?v=MMn-4MMns3U
